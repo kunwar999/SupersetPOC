@@ -1,57 +1,42 @@
 package com.superset.model.graph;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.superset.context.ApplicationContextSupersetPOCProvider;
+import com.superset.model.Parameter;
 
-public abstract class GraphImpl implements Graph {
+public class GraphImpl implements Graph {
 
-	@Value("${graph.common.hostName}")
-	protected String hostName;
-	@Value("${graph.common.scheme}")
-	protected String scheme;
+	private String graphName;
+	private Attributes attributes;
 
-	protected String graphName;
-	protected Attributes attributes;
-
-	public GraphImpl() {
+	public GraphImpl(String graphName) {
+		this.graphName = graphName;
 		this.attributes = new Attributes();
 	}
 
-	public String getGraphName() {
-		return graphName;
+	@Override
+	public String createUrl() {
+		String urlPrefixProperty = "graph.common.hostName";
+		String urlSuffixProperty = "graph." + this.graphName + ".url";
+		String urlPrefix = ApplicationContextSupersetPOCProvider.getProperty(urlPrefixProperty);
+		String urlSuffix = ApplicationContextSupersetPOCProvider.getProperty(urlSuffixProperty);
+		if (this.graphName.equalsIgnoreCase(urlSuffix))
+			return urlSuffix;
+		return urlPrefix + urlSuffix;
+
 	}
 
 	@Override
-	public boolean isExpectedGraph(String graphName) {
-		return this.graphName.equalsIgnoreCase(graphName);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((graphName == null) ? 0 : graphName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean validateAndSet(Parameter parameter) {
+		String urlSuffixProperty = "graph." + this.graphName + ".url";
+		String urlSuffix = ApplicationContextSupersetPOCProvider.getProperty(urlSuffixProperty);
+		if (this.graphName.equalsIgnoreCase(urlSuffix))
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GraphImpl other = (GraphImpl) obj;
-		if (graphName == null) {
-			if (other.graphName != null)
-				return false;
-		} else if (!graphName.equals(other.graphName))
-			return false;
 		return true;
+
 	}
 
-	@Override
-	public String toString() {
-		return "GraphImpl [graphName=" + graphName + ", attributes=" + attributes + "]";
+	public void setDefaultValues() {
+		// TODO Auto-generated method stub
+
 	}
 }
