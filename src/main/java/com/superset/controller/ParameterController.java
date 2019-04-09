@@ -17,10 +17,8 @@ public class ParameterController {
 	private String noUrl;
 	@Value("${graph.common.success}")
 	private String successMessage;
-	@Value("${graph.common.invalidGraph}")
-	private String invalidGraphMessage;
-	@Value("${graph.common.invalidParameter}")
-	private String invalidParameterMessage;
+	@Value("${graph.common.homeMessage}")
+	private String homeSuccessMessage;
 
 	private Parameters parameters = null;
 
@@ -44,14 +42,22 @@ public class ParameterController {
 
 	public ResponseEntity<String> createResponse(Parameters parameter) {
 		HttpStatus status = null;
-		String message = parameter.validateAndSet(invalidGraphMessage, invalidParameterMessage);
+		String message = parameter.validateAndSet();
 		if (message == null) {
 			this.parameters = parameter;
-			message = this.successMessage;
+			message = getSuccessMessage(parameter);
 			status = HttpStatus.OK;
 		} else {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return new ResponseEntity<String>(message, status);
+	}
+
+	private String getSuccessMessage(Parameters parameter) {
+		String message = this.successMessage;
+		if (parameter.homeGraphSelected()) {
+			message = this.homeSuccessMessage;
+		}
+		return message;
 	}
 }

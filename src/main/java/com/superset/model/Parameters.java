@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
+import com.superset.constant.SupersetConstants;
 import com.superset.context.ApplicationContextSupersetPOCProvider;
 import com.superset.model.graph.GraphImpl;
 import com.superset.service.GraphFinder;
@@ -20,27 +21,42 @@ public class Parameters {
 	}
 
 	public String createUrl() {
-		return graph.createUrl();
+		return this.graph.createUrl();
 	}
 
-	public String validateAndSet(String invalidGraphMessage, String invalidParameterMessage) {
+	public String validateAndSet() {
 		GraphFinder graphFinder = ApplicationContextSupersetPOCProvider.getGraphFinder();
-		if (graphFinder.findGraph(graphName) == null) {
-			return graphName + " " + invalidGraphMessage;
+		if (graphFinder.findGraph(this.graphName) == null) {
+			return this.graphName + SupersetConstants.SPACE
+					+ ApplicationContextSupersetPOCProvider.getProperty(SupersetConstants.INVALID_GRAPH_PROPERTY);
 		}
 		this.graph = new GraphImpl(this.graphName);
 		String invalidAttributes = this.graph.validateAndSet(this.parameters);
 		if (!StringUtils.isEmpty(invalidAttributes)) {
-			return invalidAttributes + " " + invalidParameterMessage;
+			return invalidAttributes + SupersetConstants.SPACE + getInvalidParameterMessageSuffix(invalidAttributes);
 		}
 		return null;
 	}
 
+	private String getInvalidParameterMessageSuffix(String invalidAttributes) {
+		String invalidParameterMessageSuffix = ApplicationContextSupersetPOCProvider
+				.getProperty(SupersetConstants.INVALID_PARAMETER_PROPERTY);
+		if (invalidAttributes.indexOf(SupersetConstants.COMMA) == -1) {
+			invalidParameterMessageSuffix = invalidParameterMessageSuffix.replace(SupersetConstants.ARE,
+					SupersetConstants.IS);
+		}
+		return invalidParameterMessageSuffix;
+	}
+
+	public boolean homeGraphSelected() {
+		return this.graph.isHomeGraph();
+	}
+
 	public String getGraphName() {
-		return graphName;
+		return this.graphName;
 	}
 
 	public List<Parameter> getParameters() {
-		return parameters;
+		return this.parameters;
 	}
 }

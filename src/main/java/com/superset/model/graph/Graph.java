@@ -9,4 +9,6 @@ public interface Graph {
 	public String createUrl();
 
 	public String validateAndSet(List<Parameter> parameters);
+
+	public boolean isHomeGraph();
 }

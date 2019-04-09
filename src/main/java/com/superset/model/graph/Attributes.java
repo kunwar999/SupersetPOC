@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.assertj.core.util.Arrays;
 
+import com.superset.constant.SupersetConstants;
+import com.superset.context.ApplicationContextSupersetPOCProvider;
 import com.superset.model.Parameter;
 
 public class Attributes {
@@ -17,14 +16,17 @@ public class Attributes {
 
 	public Attributes(String graphName) {
 		this.attributeMap = new HashMap<String, String>();
-	}
-
-	public Map<String, String> getAttributeMap() {
-		return attributeMap;
-	}
-
-	public void put(String name, String value) {
-		this.attributeMap.put(name, value);
+		String attributesProperty = SupersetConstants.GRAPH_WITH_DOT + graphName
+				+ SupersetConstants.DOT_WITH_ATTRIBUTES;
+		String attributesMapString = ApplicationContextSupersetPOCProvider.getProperty(attributesProperty);
+		if (attributesMapString != null) {
+			String[] attributesMapArray = attributesMapString.split(SupersetConstants.COMMA);
+			Arrays.asList(attributesMapArray).forEach(singleAttributeMapString -> {
+				String[] singleAttributeMapArray = ((String) singleAttributeMapString).split(SupersetConstants.COLON);
+				this.attributeMap.put(singleAttributeMapArray[SupersetConstants.KEY_INDEX],
+						singleAttributeMapArray[SupersetConstants.VALUE_INDEX]);
+			});
+		}
 	}
 
 	public boolean validateAndSet(Parameter parameter) {
@@ -35,13 +37,12 @@ public class Attributes {
 		return isValid;
 	}
 
-	public String createUrl(String scheme, String hostName) {
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+	public String updateUrlSuffix(String urlSuffix) {
+		String updatedUrlSuffix = urlSuffix;
 		for (Entry<String, String> entry : this.attributeMap.entrySet()) {
-			params.add(entry.getKey(), entry.getValue());
+			updatedUrlSuffix = updatedUrlSuffix.replace(
+					SupersetConstants.CURLY_START + entry.getKey() + SupersetConstants.CURLY_END, entry.getValue());
 		}
-		UriComponents uriComponents = UriComponentsBuilder.newInstance().scheme(scheme).host(hostName)
-				.queryParams(params).build();
-		return uriComponents.toUriString();
+		return updatedUrlSuffix;
 	}
 }

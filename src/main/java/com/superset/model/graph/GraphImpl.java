@@ -2,9 +2,9 @@ package com.superset.model.graph;
 
 import java.util.List;
 
+import com.superset.constant.SupersetConstants;
 import com.superset.context.ApplicationContextSupersetPOCProvider;
 import com.superset.model.Parameter;
-import com.superset.model.Parameters;
 
 public class GraphImpl implements Graph {
 
@@ -18,29 +18,35 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public String createUrl() {
-		String urlPrefixProperty = "graph.common.hostName";
-		String urlSuffixProperty = "graph." + this.graphName + ".url";
+		String urlPrefixProperty = SupersetConstants.HOSTNAME_PROPERTY;
+		String urlSuffixProperty = SupersetConstants.GRAPH_WITH_DOT + this.graphName + SupersetConstants.DOT_WITH_URL;
 		String urlPrefix = ApplicationContextSupersetPOCProvider.getProperty(urlPrefixProperty);
 		String urlSuffix = ApplicationContextSupersetPOCProvider.getProperty(urlSuffixProperty);
-		if (this.graphName.equalsIgnoreCase(urlSuffix))
+		if (isHomeGraph()) {
 			return urlSuffix;
-		return urlPrefix + urlSuffix;
+		}
+		return urlPrefix + this.attributes.updateUrlSuffix(urlSuffix);
 
 	}
 
 	@Override
 	public String validateAndSet(List<Parameter> parameters) {
-		String urlSuffixProperty = "graph." + this.graphName + ".url";
-		String urlSuffix = ApplicationContextSupersetPOCProvider.getProperty(urlSuffixProperty);
-		if (this.graphName.equalsIgnoreCase(urlSuffix))
+		if (isHomeGraph())
 			return null;
 		StringBuffer invalidAttributes = new StringBuffer();
 		parameters.stream().forEach(parameter -> {
-			if (!graph.validateAndSet(parameter)) {
-				invalidAttributes.append(parameter.getKey());
+			if (!this.attributes.validateAndSet(parameter)) {
+				invalidAttributes.append(parameter.getKey() + SupersetConstants.COMMA);
 			}
 		});
-		return invalidAttributes.toString();
+		return invalidAttributes.length() > 0 ? invalidAttributes.substring(0, invalidAttributes.length() - 1)
+				: invalidAttributes.toString();
+	}
 
+	@Override
+	public boolean isHomeGraph() {
+		String urlSuffixProperty = SupersetConstants.GRAPH_WITH_DOT + this.graphName + SupersetConstants.DOT_WITH_URL;
+		String urlSuffix = ApplicationContextSupersetPOCProvider.getProperty(urlSuffixProperty);
+		return this.graphName.equalsIgnoreCase(urlSuffix);
 	}
 }
