@@ -44,7 +44,7 @@ public class ParameterController {
 
 	public ResponseEntity<String> createResponse(Parameters parameter) {
 		HttpStatus status = null;
-		String message = parameter.validate(invalidGraphMessage, invalidParameterMessage);
+		String message = parameter.validateAndSet(invalidGraphMessage, invalidParameterMessage);
 		if (message == null) {
 			this.parameters = parameter;
 			message = this.successMessage;

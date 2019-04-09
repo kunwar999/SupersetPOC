@@ -1,7 +1,10 @@
 package com.superset.model.graph;
 
+import java.util.List;
+
 import com.superset.context.ApplicationContextSupersetPOCProvider;
 import com.superset.model.Parameter;
+import com.superset.model.Parameters;
 
 public class GraphImpl implements Graph {
 
@@ -10,7 +13,7 @@ public class GraphImpl implements Graph {
 
 	public GraphImpl(String graphName) {
 		this.graphName = graphName;
-		this.attributes = new Attributes();
+		this.attributes = new Attributes(graphName);
 	}
 
 	@Override
@@ -26,17 +29,18 @@ public class GraphImpl implements Graph {
 	}
 
 	@Override
-	public boolean validateAndSet(Parameter parameter) {
+	public String validateAndSet(List<Parameter> parameters) {
 		String urlSuffixProperty = "graph." + this.graphName + ".url";
 		String urlSuffix = ApplicationContextSupersetPOCProvider.getProperty(urlSuffixProperty);
 		if (this.graphName.equalsIgnoreCase(urlSuffix))
-			return true;
-		return true;
-
-	}
-
-	public void setDefaultValues() {
-		// TODO Auto-generated method stub
+			return null;
+		StringBuffer invalidAttributes = new StringBuffer();
+		parameters.stream().forEach(parameter -> {
+			if (!graph.validateAndSet(parameter)) {
+				invalidAttributes.append(parameter.getKey());
+			}
+		});
+		return invalidAttributes.toString();
 
 	}
 }

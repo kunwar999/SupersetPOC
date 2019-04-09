@@ -15,7 +15,7 @@ public class Attributes {
 
 	private Map<String, String> attributeMap;
 
-	public Attributes() {
+	public Attributes(String graphName) {
 		this.attributeMap = new HashMap<String, String>();
 	}
 
@@ -43,35 +43,5 @@ public class Attributes {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance().scheme(scheme).host(hostName)
 				.queryParams(params).build();
 		return uriComponents.toUriString();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((attributeMap == null) ? 0 : attributeMap.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Attributes other = (Attributes) obj;
-		if (attributeMap == null) {
-			if (other.attributeMap != null)
-				return false;
-		} else if (!attributeMap.equals(other.attributeMap))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Attributes [attributeMap=" + attributeMap + "]";
 	}
 }

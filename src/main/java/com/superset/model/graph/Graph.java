@@ -1,10 +1,12 @@
 package com.superset.model.graph;
 
+import java.util.List;
+
 import com.superset.model.Parameter;
 
 public interface Graph {
 
 	public String createUrl();
 
-	public boolean validateAndSet(Parameter parameter);
+	public String validateAndSet(List<Parameter> parameters);
 }
