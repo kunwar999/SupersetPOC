@@ -1,4 +1,4 @@
-package com.superset.controller;
+package com.hack.TransmissionLineService.superset.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.superset.model.Parameters;
+import com.hack.TransmissionLineService.superset.model.Parameters;
 
 @RestController
 public class ParameterController {

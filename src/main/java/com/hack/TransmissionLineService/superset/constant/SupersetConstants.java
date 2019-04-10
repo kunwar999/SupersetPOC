@@ -1,4 +1,4 @@
-package com.superset.constant;
+package com.hack.TransmissionLineService.superset.constant;
 
 public interface SupersetConstants {
 	public static final String GRAPH_FINDER_CLASS_NAME = "graphFinder";

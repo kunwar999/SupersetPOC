@@ -1,8 +1,8 @@
-package com.superset.model.graph;
+package com.hack.TransmissionLineService.superset.model.graph;
 
 import java.util.List;
 
-import com.superset.model.Parameter;
+import com.hack.TransmissionLineService.superset.model.Parameter;
 
 public interface Graph {
 

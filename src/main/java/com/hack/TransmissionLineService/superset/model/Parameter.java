@@ -1,4 +1,4 @@
-package com.superset.model;
+package com.hack.TransmissionLineService.superset.model;
 
 public class Parameter {
 

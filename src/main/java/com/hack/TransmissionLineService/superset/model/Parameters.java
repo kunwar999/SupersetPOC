@@ -1,14 +1,14 @@
-package com.superset.model;
+package com.hack.TransmissionLineService.superset.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.util.StringUtils;
 
-import com.superset.constant.SupersetConstants;
-import com.superset.context.ApplicationContextSupersetPOCProvider;
-import com.superset.model.graph.GraphImpl;
-import com.superset.service.GraphFinder;
+import com.hack.TransmissionLineService.superset.constant.SupersetConstants;
+import com.hack.TransmissionLineService.superset.context.ApplicationContextSupersetPOCProvider;
+import com.hack.TransmissionLineService.superset.model.graph.GraphImpl;
+import com.hack.TransmissionLineService.superset.service.GraphFinder;
 
 public class Parameters {
 

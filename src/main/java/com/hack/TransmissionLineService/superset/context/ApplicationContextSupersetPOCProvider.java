@@ -1,4 +1,4 @@
-package com.superset.context;
+package com.hack.TransmissionLineService.superset.context;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -7,8 +7,8 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import com.superset.constant.SupersetConstants;
-import com.superset.service.GraphFinder;
+import com.hack.TransmissionLineService.superset.constant.SupersetConstants;
+import com.hack.TransmissionLineService.superset.service.GraphFinder;
 
 @Component
 public class ApplicationContextSupersetPOCProvider implements ApplicationContextAware, EnvironmentAware {

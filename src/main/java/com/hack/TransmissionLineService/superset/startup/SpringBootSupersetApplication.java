@@ -1,4 +1,4 @@
-package com.superset.startup;
+package com.hack.TransmissionLineService.superset.startup;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@ComponentScan("com.superset")
+@ComponentScan("com.hack.TransmissionLineService.superset")
 @EnableSwagger2
 public class SpringBootSupersetApplication {
 
@@ -24,9 +24,11 @@ public class SpringBootSupersetApplication {
 				.paths(PathSelectors.any()).build();
 	}
 
-	@Bean public ConversionService conversionService() {
-	    return new DefaultConversionService();
+	@Bean
+	public ConversionService conversionService() {
+		return new DefaultConversionService();
 	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSupersetApplication.class, args);
 	}

@@ -1,10 +1,10 @@
-package com.superset.model.graph;
+package com.hack.TransmissionLineService.superset.model.graph;
 
 import java.util.List;
 
-import com.superset.constant.SupersetConstants;
-import com.superset.context.ApplicationContextSupersetPOCProvider;
-import com.superset.model.Parameter;
+import com.hack.TransmissionLineService.superset.constant.SupersetConstants;
+import com.hack.TransmissionLineService.superset.context.ApplicationContextSupersetPOCProvider;
+import com.hack.TransmissionLineService.superset.model.Parameter;
 
 public class GraphImpl implements Graph {
 
@@ -12,8 +12,8 @@ public class GraphImpl implements Graph {
 	private Attributes attributes;
 
 	public GraphImpl(String graphName) {
-		this.graphName = graphName;
-		this.attributes = new Attributes(graphName);
+		this.graphName = graphName.toLowerCase();
+		this.attributes = new Attributes(graphName.toLowerCase());
 	}
 
 	@Override
