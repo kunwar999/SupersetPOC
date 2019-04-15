@@ -17,4 +17,5 @@ public interface SupersetConstants {
 	public static final String IS = "is";
 	public static final String ARE = "are";
 	public static final String SPACE = " ";
+	public static final String DOT_WITH_SUCCESS = ".success";
 }

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hack.TransmissionLineService.superset.constant.SupersetConstants;
+import com.hack.TransmissionLineService.superset.context.ApplicationContextSupersetPOCProvider;
 import com.hack.TransmissionLineService.superset.model.Parameters;
 
 @RestController
@@ -15,8 +17,6 @@ public class ParameterController {
 
 	@Value("${graph.common.noUrl}")
 	private String noUrl;
-	@Value("${graph.common.success}")
-	private String successMessage;
 	@Value("${graph.common.homeMessage}")
 	private String homeSuccessMessage;
 
@@ -54,10 +54,11 @@ public class ParameterController {
 	}
 
 	private String getSuccessMessage(Parameters parameter) {
-		String message = this.successMessage;
 		if (parameter.homeGraphSelected()) {
-			message = this.homeSuccessMessage;
+			return this.homeSuccessMessage;
 		}
+		String message = ApplicationContextSupersetPOCProvider.getProperty(SupersetConstants.GRAPH_WITH_DOT
+				+ parameter.getGraphName().toLowerCase() + SupersetConstants.DOT_WITH_SUCCESS);
 		return message;
 	}
 }
